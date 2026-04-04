@@ -51,6 +51,13 @@
 
     <div class="text-5xl sm:text-6xl mb-6">🎉🎈🎁</div>
 
+<!-- SLIDESHOW START -->
+<div class="relative w-full h-60 mb-4 overflow-hidden rounded-xl shadow-lg">
+  <img id="slideshow" src="photo1.jpeg" 
+       class="w-full h-full object-cover transition duration-700">
+</div>
+<!-- SLIDESHOW END -->
+
     <button onclick="celebrate()" 
       class="mt-4 px-6 py-3 bg-pink-500 text-white rounded-xl shadow hover:bg-pink-600 transition w-full sm:w-auto">
       Celebrate 🎊
@@ -73,6 +80,41 @@
 
   <script>
     // Auto confetti on load
+// Main numbered photos
+let images = [];
+
+// Add photo1 → photo66
+for (let i = 1; i <= 66; i++) {
+  images.push(`photo${i}.jpeg`);
+}
+
+// Add special ones manually
+images.push(
+  "photo1_2.jpeg",
+  "photo49_1.jpeg",
+  "photo50_1.jpeg",
+  "photo50_2.jpeg"
+);
+
+// OPTIONAL: shuffle for random order
+images.sort(() => Math.random() - 0.5);
+
+let index = 0;
+
+setInterval(() => {
+  index = (index + 1) % images.length;
+
+  const slide = document.getElementById("slideshow");
+
+  slide.style.opacity = 0;
+
+  setTimeout(() => {
+    slide.src = images[index];
+    slide.style.opacity = 1;
+  }, 300);
+
+}, 2000);
+    
     window.onload = () => {
       confetti({
         particleCount: 120,
