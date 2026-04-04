@@ -1,155 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Happy Birthday Venky Anna 🎉</title>
 
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <style>
     body {
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      margin: 0;
       overflow: hidden;
-    }
-
-    .balloon {
-      position: absolute;
-      bottom: -100px;
-      width: 40px;
-      height: 55px;
-      border-radius: 50%;
-      animation: float 8s infinite ease-in;
-    }
-
-    @keyframes float {
-      0% { transform: translateY(0); opacity: 1; }
-      100% { transform: translateY(-120vh); opacity: 0; }
     }
   </style>
 </head>
-<!-- FULL SCREEN SLIDESHOW -->
+
+<body>
+
+<!-- 🌄 FULL SCREEN SLIDESHOW -->
 <img id="bg-slideshow" 
      src="photo1.jpeg"
-     class="fixed top-0 left-0 w-full h-full object-cover z-0 transition duration-700">
-  
-<body class="min-h-screen flex items-center justify-center px-4 relative">
+     class="fixed top-0 left-0 w-full h-full object-cover transition duration-700">
 
-  <!-- Balloons -->
-  <div class="balloon bg-pink-400 left-10" style="animation-delay: 0s;"></div>
-  <div class="balloon bg-yellow-400 left-1/3" style="animation-delay: 2s;"></div>
-  <div class="balloon bg-blue-400 left-2/3" style="animation-delay: 4s;"></div>
-  <div class="balloon bg-green-400 right-10" style="animation-delay: 1s;"></div>
+<!-- 🌑 DARK OVERLAY -->
+<div class="fixed top-0 left-0 w-full h-full bg-black/30"></div>
 
-  <!-- Card -->
-  <div class="bg-white/80 backdrop-blur-md shadow-2xl rounded-2xl p-6 sm:p-8 max-w-md w-full text-center z-10 relative">
-    
-    <h1 class="text-3xl sm:text-4xl font-extrabold text-pink-500 mb-4">
-      🎂 Happy Birthday Venky Anna! 🎂
-    </h1>
-
-    <p class="text-base sm:text-lg text-gray-700 mb-6">
-      Wishing you a day filled with love, laughter, and everything that makes you smile 💖
-    </p>
-
-    <div class="text-5xl sm:text-6xl mb-6">🎉🎈🎁</div>
-
-<!-- SLIDESHOW START -->
-<div class="relative w-full h-60 mb-4 overflow-hidden rounded-xl shadow-lg">
-  <img id="slideshow" src="photo1.jpeg" 
-       class="w-full h-full object-cover transition duration-700">
+<!-- 🎊 CELEBRATE BUTTON -->
+<div class="fixed bottom-10 w-full flex justify-center z-10">
+  <button onclick="celebrate()" 
+    class="px-8 py-3 bg-pink-500 text-white text-lg rounded-xl shadow-lg hover:bg-pink-600 transition">
+    🎊 Celebrate 🎊
+  </button>
 </div>
-<!-- SLIDESHOW END -->
 
-    <button onclick="celebrate()" 
-      class="mt-4 px-6 py-3 bg-pink-500 text-white rounded-xl shadow hover:bg-pink-600 transition w-full sm:w-auto">
-      Celebrate 🎊
-    </button>
+<!-- 🎵 MUSIC -->
+<audio id="music" autoplay loop>
+  <source src="song.mp3" type="audio/mpeg">
+</audio>
 
-    <button onclick="toggleMusic()" 
-      class="mt-3 px-6 py-2 bg-purple-500 text-white rounded-xl shadow hover:bg-purple-600 transition w-full sm:w-auto">
-      Toggle Music 🎶
-    </button>
+<script>
+  // 🎵 Try autoplay on load
+  window.onload = () => {
+    const music = document.getElementById("music");
 
-    <p id="surprise" class="mt-4 text-lg sm:text-xl font-semibold text-purple-600 hidden">
-      You are amazing! Have the best birthday ever! 💖
-    </p>
-  </div>
+    music.play().catch(() => {
+      console.log("Autoplay blocked, user interaction needed");
+    });
 
-  <!-- Music -->
-  <audio id="music" loop>
-    <source src="https://www.bensound.com/bensound-music/bensound-happyrock.mp3" type="audio/mpeg">
-  </audio>
+    // 🎉 Initial confetti
+    confetti({
+      particleCount: 120,
+      spread: 100,
+      origin: { y: 0.6 }
+    });
+  };
 
-  <script>
-    // Auto confetti on load
-// Main numbered photos
-let images = [];
+  // 🎊 Button confetti
+  function celebrate() {
+    const music = document.getElementById("music");
+    music.play();
 
-// Add photo1 → photo66
-for (let i = 1; i <= 66; i++) {
-  images.push(`photo${i}.jpeg`);
-}
+    confetti({
+      particleCount: 200,
+      spread: 120,
+      origin: { y: 0.6 }
+    });
+  }
 
-// Add special ones manually
-images.push(
-  "photo1_2.jpeg",
-  "photo49_1.jpeg",
-  "photo50_1.jpeg",
-  "photo50_2.jpeg"
-);
+  // 📸 SLIDESHOW IMAGES
+  let images = [];
 
-// OPTIONAL: shuffle for random order
-images.sort(() => Math.random() - 0.5);
+  // photo1 → photo66
+  for (let i = 1; i <= 66; i++) {
+    images.push(`photo${i}.jpeg`);
+  }
 
-let index = 0;
+  // extra images
+  images.push(
+    "photo1_2.jpeg",
+    "photo49_1.jpeg",
+    "photo50_1.jpeg",
+    "photo50_2.jpeg"
+  );
 
-setInterval(() => {
-  index = (index + 1) % images.length;
+  // shuffle images
+  images.sort(() => Math.random() - 0.5);
 
-  const slide = document.getElementById("bg-slideshow");
-  slide.style.opacity = 0;
+  let index = 0;
 
-  setTimeout(() => {
-    slide.src = images[index];
-    slide.style.opacity = 1;
-  }, 300);
+  // 🔄 Slideshow loop
+  setInterval(() => {
+    index = (index + 1) % images.length;
 
-}, 2000);
-    
-    window.onload = () => {
-      confetti({
-        particleCount: 120,
-        spread: 100,
-        origin: { y: 0.5 }
-      });
-    };
+    const slide = document.getElementById("bg-slideshow");
 
-    function celebrate() {
-      document.getElementById('surprise').classList.remove('hidden');
+    slide.style.opacity = 0;
 
-      confetti({
-        particleCount: 200,
-        spread: 120,
-        origin: { y: 0.6 }
-      });
+    setTimeout(() => {
+      slide.src = images[index];
+      slide.style.opacity = 1;
+    }, 300);
 
-      setTimeout(() => {
-        confetti({ particleCount: 100, spread: 120, origin: { x: 0.1 } });
-        confetti({ particleCount: 100, spread: 120, origin: { x: 0.9 } });
-      }, 300);
-    }
+  }, 2000);
 
-    function toggleMusic() {
-      const music = document.getElementById("music");
-      if (music.paused) {
-        music.play();
-      } else {
-        music.pause();
-      }
-    }
-  </script>
+</script>
 
 </body>
 </html>
