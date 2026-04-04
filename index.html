@@ -29,7 +29,11 @@
     }
   </style>
 </head>
-
+<!-- FULL SCREEN SLIDESHOW -->
+<img id="bg-slideshow" 
+     src="photo1.jpeg"
+     class="fixed top-0 left-0 w-full h-full object-cover z-0 transition duration-700">
+  
 <body class="min-h-screen flex items-center justify-center px-4 relative">
 
   <!-- Balloons -->
@@ -39,7 +43,7 @@
   <div class="balloon bg-green-400 right-10" style="animation-delay: 1s;"></div>
 
   <!-- Card -->
-  <div class="bg-white shadow-2xl rounded-2xl p-6 sm:p-8 max-w-md w-full text-center z-10">
+  <div class="bg-white/80 backdrop-blur-md shadow-2xl rounded-2xl p-6 sm:p-8 max-w-md w-full text-center z-10 relative">
     
     <h1 class="text-3xl sm:text-4xl font-extrabold text-pink-500 mb-4">
       🎂 Happy Birthday Venky Anna! 🎂
@@ -104,8 +108,7 @@ let index = 0;
 setInterval(() => {
   index = (index + 1) % images.length;
 
-  const slide = document.getElementById("slideshow");
-
+  const slide = document.getElementById("bg-slideshow");
   slide.style.opacity = 0;
 
   setTimeout(() => {
