@@ -5,10 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Happy Birthday Venky Anna 🎉</title>
 
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <style>
@@ -21,7 +18,7 @@
 
 <body>
 
-<!-- 🌄 FULL SCREEN SLIDESHOW -->
+<!-- 📸 FULL SCREEN IMAGE -->
 <img id="bg-slideshow" 
      src="photo1.jpeg"
      class="fixed top-0 left-0 w-full h-full object-cover transition duration-700">
@@ -29,12 +26,10 @@
 <!-- 🌑 DARK OVERLAY -->
 <div class="fixed top-0 left-0 w-full h-full bg-black/30"></div>
 
-<!-- 🎊 CELEBRATE BUTTON -->
-<div class="fixed bottom-10 w-full flex justify-center z-10">
-  <button onclick="celebrate()" 
-    class="px-8 py-3 bg-pink-500 text-white text-lg rounded-xl shadow-lg hover:bg-pink-600 transition">
-    🎊 Celebrate 🎊
-  </button>
+<!-- 🎂 TEXT (ONLY FIRST IMAGE) -->
+<div id="birthdayText" 
+     class="fixed top-10 w-full text-center text-white text-3xl sm:text-5xl font-bold z-10 drop-shadow-lg">
+  🎂 Happy Birthday Venky Anna 🎂
 </div>
 
 <!-- 🎵 MUSIC -->
@@ -43,15 +38,14 @@
 </audio>
 
 <script>
-  // 🎵 Try autoplay on load
+  // 🎵 autoplay + confetti
   window.onload = () => {
     const music = document.getElementById("music");
 
     music.play().catch(() => {
-      console.log("Autoplay blocked, user interaction needed");
+      console.log("Autoplay blocked");
     });
 
-    // 🎉 Initial confetti
     confetti({
       particleCount: 120,
       spread: 100,
@@ -59,27 +53,13 @@
     });
   };
 
-  // 🎊 Button confetti
-  function celebrate() {
-    const music = document.getElementById("music");
-    music.play();
-
-    confetti({
-      particleCount: 200,
-      spread: 120,
-      origin: { y: 0.6 }
-    });
-  }
-
-  // 📸 SLIDESHOW IMAGES
+  // 📸 IMAGES
   let images = [];
 
-  // photo1 → photo66
   for (let i = 1; i <= 66; i++) {
     images.push(`photo${i}.jpeg`);
   }
 
-  // extra images
   images.push(
     "photo1_2.jpeg",
     "photo49_1.jpeg",
@@ -87,22 +67,30 @@
     "photo50_2.jpeg"
   );
 
-  // shuffle images
   images.sort(() => Math.random() - 0.5);
 
   let index = 0;
 
-  // 🔄 Slideshow loop
+  // 🔄 SLIDESHOW
   setInterval(() => {
     index = (index + 1) % images.length;
 
     const slide = document.getElementById("bg-slideshow");
+    const text = document.getElementById("birthdayText");
 
     slide.style.opacity = 0;
 
     setTimeout(() => {
       slide.src = images[index];
       slide.style.opacity = 1;
+
+      // 🎯 SHOW TEXT ONLY ON FIRST IMAGE
+      if (index === 0) {
+        text.style.display = "block";
+      } else {
+        text.style.display = "none";
+      }
+
     }, 300);
 
   }, 2000);
